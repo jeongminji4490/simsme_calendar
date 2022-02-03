@@ -2,12 +2,15 @@ package com.example.mycustomcalendar;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.NumberFormat;
@@ -92,7 +95,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             holder.timeText.setBackground(null);
             //holder.timeText.setTextColor(mContext.getResources().getColor(R.color.disable_color));
-            holder.timeText.setTextColor(mContext.getResources().getColor(R.color.purple_200));
+            //holder.timeText.setTextColor(mContext.getResources().getColor(Color.parseColor("#CCCCCC")));
+            holder.timeText.setTextColor(Color.parseColor("#CCCCCC"));
 
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("d");
@@ -112,7 +116,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
                 else
                 {
-                    holder.dayText.setTextColor(mContext.getResources().getColor(R.color.black));
+                    holder.timeText.setTextColor(Color.parseColor("F0FFF0")); //해당 날짜가 아니면 텍스트 안보이게
                 }
             } catch (Exception e) {
                 holder.dayText.setText("");
@@ -183,11 +187,26 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public class DayViewHolder extends RecyclerView.ViewHolder{
         public TextView dayText;
         public TextView timeText;
+        public ConstraintLayout mainCL;
 
         public DayViewHolder(@NonNull View itemView) {
             super(itemView);
             dayText = itemView.findViewById(R.id.dayText);
             timeText = itemView.findViewById(R.id.timeText);
+            mainCL=itemView.findViewById(R.id.mainCL);
+
+            dayText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int pos=getAdapterPosition();
+                    if (pos!=RecyclerView.NO_POSITION){
+                        DayModel model=mCalendarList.get(pos);
+                        Log.e("item", model.getDate());
+                    }else{
+                        Log.e("Adapter", "NO Position");
+                    }
+                }
+            });
         }
     }
 }

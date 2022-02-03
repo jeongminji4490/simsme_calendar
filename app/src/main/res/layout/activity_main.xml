@@ -9,13 +9,14 @@
 
     <ImageButton
         android:id="@+id/left_btn"
-        android:layout_width="17dp"
-        android:layout_height="17dp"
-        android:src="@drawable/ic_left_btn_foreground"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:src="@drawable/left"
+        android:scaleType="fitCenter"
         android:background="#00ff0000"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_margin="25dp"
+        android:layout_margin="20dp"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -24,24 +25,36 @@
         android:layout_height="wrap_content"
         android:text="2022-02"
         android:textSize="19sp"
-        android:textStyle="bold"
         android:layout_margin="20dp"
+        android:textStyle="bold"
+        android:textColor="#64A0FF"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/right_btn"
-        android:layout_width="17dp"
-        android:layout_height="17dp"
-        android:src="@drawable/ic_right_btn_foreground"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:src="@drawable/right"
+        android:scaleType="fitCenter"
         android:background="#00ff0000"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="25dp"
+        android:layout_margin="20dp"
         tools:ignore="MissingConstraints" />
 
 
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/mtrl_calendar_days_of_week"
+        app:layout_constraintEnd_toEndOf="@id/mtrl_calendar_days_of_week"
+        app:layout_constraintTop_toTopOf="@+id/mtrl_calendar_days_of_week"
+        app:layout_constraintBottom_toBottomOf="@+id/mtrl_calendar_days_of_week"
+        android:src="@drawable/rectangle"
+        android:layout_margin="5dp"
+        tools:ignore="MissingConstraints" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mtrl_calendar_days_of_week"
@@ -50,27 +63,43 @@
         app:layout_constraintTop_toBottomOf="@+id/right_btn"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_margin="20dp"
+        android:layout_margin="15dp"
         tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/sunday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="일"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toStartOf="@+id/monday"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/monday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tuesday"
+            app:layout_constraintStart_toEndOf="@+id/sunday"
+            app:layout_constraintEnd_toStartOf="@id/tuesday"
+            android:text="월"
             android:gravity="center"
-            android:text="일"/>
+            android:textSize="13sp"
+            android:textColor="@color/white"
+            app:layout_constraintHorizontal_bias="0.5"/>
 
         <TextView
             android:id="@+id/tuesday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/monday"
-            app:layout_constraintEnd_toStartOf="@id/wednesday"
-            android:text="월"
+            app:layout_constraintEnd_toStartOf="@+id/wednesday"
+            android:text="화"
             android:gravity="center"
+            android:textSize="13sp"
+            android:textColor="@color/white"
             app:layout_constraintHorizontal_bias="0.5"/>
 
         <TextView
@@ -79,8 +108,10 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/tuesday"
             app:layout_constraintEnd_toStartOf="@+id/thursday"
-            android:text="화"
+            android:text="수"
             android:gravity="center"
+            android:textSize="13sp"
+            android:textColor="@color/white"
             app:layout_constraintHorizontal_bias="0.5"/>
 
         <TextView
@@ -89,8 +120,10 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/wednesday"
             app:layout_constraintEnd_toStartOf="@+id/friday"
-            android:text="수"
+            android:text="목"
             android:gravity="center"
+            android:textSize="13sp"
+            android:textColor="@color/white"
             app:layout_constraintHorizontal_bias="0.5"/>
 
         <TextView
@@ -99,7 +132,9 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/thursday"
             app:layout_constraintEnd_toStartOf="@+id/saturday"
-            android:text="목"
+            android:text="금"
+            android:textSize="13sp"
+            android:textColor="@color/white"
             android:gravity="center"
             app:layout_constraintHorizontal_bias="0.5"/>
 
@@ -108,22 +143,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/friday"
-            app:layout_constraintEnd_toStartOf="@+id/sunday"
-            android:text="금"
-            android:gravity="center"
-            app:layout_constraintHorizontal_bias="0.5"/>
-
-        <TextView
-            android:id="@+id/sunday"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@+id/saturday"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="토"
+            android:textColor="@color/white"
+            android:textSize="13sp"
             android:gravity="center"
             app:layout_constraintHorizontal_bias="0.5"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -134,6 +162,8 @@
         app:layout_constraintLeft_toLeftOf="@id/mtrl_calendar_days_of_week"
         app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
         app:spanCount="7"
+        android:background="@drawable/layout_border"
+        android:layout_margin="5dp"
         tools:ignore="MissingConstraints" />
 
 
