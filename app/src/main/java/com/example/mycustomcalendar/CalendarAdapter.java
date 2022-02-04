@@ -11,9 +11,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,19 +28,32 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final int HEADER_TYPE = 0;
     private final int EMPTY_TYPE = 1;
     private final int DAY_TYPE = 2;
-    public boolean isTime = true;
+    //public boolean isTime = true;
 
     public List<String> holiday = new ArrayList<>();
     public List<DayModel> mCalendarList;
+    List<Event> eventList=new ArrayList<>();
 
     private Context mContext;
+    private OnItemClickListener mListener=null;
 
     private NumberFormat numformat = NumberFormat.getIntegerInstance();
     String today;
+    Database db;
+
+    public interface OnItemClickListener {
+        void onItemClick(View v, int position) throws ParseException;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.mListener=listener;
+    }
 
     public CalendarAdapter(Context context){
         numformat.setMinimumIntegerDigits(2);
         mContext = context;
+        db=Database.getInstance(context);
+        eventList=db.eventDao().findAll();
 
         Date currentTime = Calendar.getInstance().getTime(); //현재시간
         today = onlyDate.format(currentTime); //오늘 날짜를 yyyy-MM-dd 형식으로 변환
@@ -47,7 +62,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemViewType(int position) {
         DayModel item = mCalendarList.get(position);
-
         if (item.getType() == 102031) {
             return EMPTY_TYPE; // 비어있는 일자 타입
         } else {
@@ -69,33 +83,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         if (viewType == EMPTY_TYPE) //비어있는 날짜면
         {
-            if(position%7 == 0)
-            {
-                if(today.equals(onlyDate.format(mCalendarList.get(position).getCalendarModel().getTime())))
-                {
-                    //holder.mainLL.setBackgroundResource(R.drawable.background_border_top_blue);
-                }
-                else {
-
-                    //holder.mainLL.setBackgroundResource(R.drawable.background_border_top);
-                }
-            }
-            else
-            {
-                if(today.equals(onlyDate.format(mCalendarList.get(position).getCalendarModel().getTime())))
-                {
-                    //holder.mainLL.setBackgroundResource(R.drawable.background_border_left_top_blue);
-                }
-                else {
-
-                    //holder.mainLL.setBackgroundResource(R.drawable.background_border_left_top);
-                }
-            }
-
-
             holder.timeText.setBackground(null);
-            //holder.timeText.setTextColor(mContext.getResources().getColor(R.color.disable_color));
-            //holder.timeText.setTextColor(mContext.getResources().getColor(Color.parseColor("#CCCCCC")));
             holder.timeText.setTextColor(Color.parseColor("#CCCCCC"));
 
             try {
@@ -123,33 +111,16 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         }
         else if (viewType == DAY_TYPE) {
-
-            if(position%7 == 0)
-            {
-
-                if(today.equals(onlyDate.format(mCalendarList.get(position).getCalendarModel().getTime())))
-                {
-                    //holder.mainLL.setBackgroundResource(R.drawable.background_border_top_blue);
-                }
-                else {
-
-                    //holder.mainLL.setBackgroundResource(R.drawable.background_border_top);
-                }
-            }
-            else
-            {
-                if(today.equals(onlyDate.format(mCalendarList.get(position).getCalendarModel().getTime())))
-                {
-                    //holder.mainLL.setBackgroundResource(R.drawable.background_border_left_top_blue);
-                }
-                else {
-
-                    //holder.mainLL.setBackgroundResource(R.drawable.background_border_left_top);
-                }
-            }
-
             holder.timeText.setBackground(null);
             holder.timeText.setTextColor(mContext.getResources().getColor(R.color.purple_200));
+            for (Event e : eventList){
+                Log.e("onBindViewHolder",e.date);
+                if (e.date.equals(mCalendarList.get(position).getDate())){
+                    holder.mainCL.setBackgroundResource(R.color.mainColor);
+                    //holder.dayText.setBackgroundResource(R.color.mainColor);
+                    break;
+                }
+            }
 
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("d");
@@ -172,7 +143,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             } catch (Exception e) {
                 holder.dayText.setText("");
             }
-
         }
     }
 
@@ -195,13 +165,18 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             timeText = itemView.findViewById(R.id.timeText);
             mainCL=itemView.findViewById(R.id.mainCL);
 
-            dayText.setOnClickListener(new View.OnClickListener() {
+            timeText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int pos=getAdapterPosition();
                     if (pos!=RecyclerView.NO_POSITION){
-                        DayModel model=mCalendarList.get(pos);
-                        Log.e("item", model.getDate());
+                        if (mListener!=null){
+                            try {
+                                mListener.onItemClick(view, pos);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }else{
                         Log.e("Adapter", "NO Position");
                     }
