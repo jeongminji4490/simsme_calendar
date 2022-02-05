@@ -125,26 +125,24 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         else if (viewType == DAY_TYPE) {
             holder.timeText.setBackground(null);
             holder.timeText.setTextColor(mContext.getResources().getColor(R.color.purple_200));
-//            for (Event e : eventList){
-//                Log.e("onBindViewHolder",e.date);
-//                if (e.date.equals(mCalendarList.get(position).getDate())){
-//                    holder.mainCL.setBackgroundResource(R.color.mainColor);
-//                    //holder.dayText.setBackgroundResource(R.color.mainColor);
-//                    break;
-//                }
-//            }
 
-            viewModel.getAllEvents()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(eventList -> {
-                        for(Event e : eventList){
-                            if (getItemCount()==0 && e.date.equals(mCalendarList.get(position).getDate())){
-                                holder.mainCL.setBackgroundResource(R.color.mainColor);
-                                break;
-                            }
-                        }
-                    });
+            if (getItemCount()!=0){
+                DotAll(position,holder);
+            }
+
+            //에러
+//            viewModel.getAllEvents()
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(eventList -> {
+//                        for(Event e : eventList){
+//                            if (getItemCount()==0 && e.date.equals(mCalendarList.get(position).getDate())){
+//                                Log.e("calendaradapter","getAllEvents");
+//                                holder.mainCL.setBackgroundResource(R.color.mainColor);
+//                                break;
+//                            }
+//                        }
+//                    });
 
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("d");
@@ -207,6 +205,22 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             });
         }
+    }
+
+    @SuppressLint("CheckResult")
+    public void DotAll(int position, DayViewHolder holder){
+        viewModel.getAllEvents()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(eventList -> {
+                    for(Event e : eventList){
+                        if (e.date!=null && e.date.equals(mCalendarList.get(position).getDate())){
+                            Log.e("calendaradapter","getAllEvents");
+                            holder.mainCL.setBackgroundResource(R.color.mainColor);
+                            break;
+                        }
+                    }
+                });
     }
 
 }

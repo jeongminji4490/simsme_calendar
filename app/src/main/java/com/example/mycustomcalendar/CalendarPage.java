@@ -23,10 +23,12 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mycustomcalendar.databinding.ActivityCalendarBinding;
+import com.example.mycustomcalendar.databinding.AddScheduleBinding;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -58,14 +60,17 @@ public class CalendarPage extends Fragment {
 
     private CalendarAdapter calendarAdapter;
     private ScheduleAdapter scheduleAdapter;
+    ItemTouchHelper itemTouchHelper;
 
     private Date nowDate = new Date();
     private Calendar nowCal = Calendar.getInstance();
     private int nowMonth = -1;
     Database db;
     List<Event> eventList=new ArrayList<>();
+    List<ScheduleItem> item=new ArrayList<>();
     int serialNum;
     ActivityCalendarBinding binding;
+    AddScheduleBinding addBinding;
 
     //dialog
     LinearLayoutManager layoutManager;
@@ -89,6 +94,7 @@ public class CalendarPage extends Fragment {
         binding.recyclerView.setAdapter(calendarAdapter);
         scheduleAdapter=new ScheduleAdapter(getContext());
         layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+        binding.schedulelistRecyclerView.setLayoutManager(layoutManager);
 
         binding.leftBtn.setOnClickListener(v -> {
             setDate(-1);
@@ -99,21 +105,14 @@ public class CalendarPage extends Fragment {
 
         selectedDateTime = Calendar.getInstance().getTime();
         Log.e("onViewCreated",defaultDateFormat.format(selectedDateTime));
+        date=String.valueOf(defaultDateFormat.format(selectedDateTime));
         binding.semiTitle.setText(todayDateFormat.format(selectedDateTime));
 
         setCalendarList(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), getContext());
-        //db=Database.getInstance(getContext());
         viewModel = new ViewModelProvider(this, new ViewModelFactory(getActivity().getApplication())).get(ViewModel.class);
-
-        //앱 실행시 오늘 날짜 setting, 이후 날짜 클릭할 때마다 todayDate가 갱신됨
-        try {
-            todayDate=new Date(defaultDateFormat.parse(selectedDate).getTime());
-            Log.e("todatDateInTryCatch",String.valueOf(todayDate));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        date=String.valueOf(defaultDateFormat.format(selectedDateTime));
-        Log.e("todatDateInTryCatch",date);
+        selectAll();
+        itemTouchHelper=new ItemTouchHelper(new SwipeController(scheduleAdapter));
+        itemTouchHelper.attachToRecyclerView(binding.schedulelistRecyclerView);
 
         binding.addScheduleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,20 +120,15 @@ public class CalendarPage extends Fragment {
                 AlertDialog writeScheduleDialog;
                 AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
                 LayoutInflater inflater=getLayoutInflater();
-                view=inflater.inflate(R.layout.add_schedule,null);
-
-                EditText title_input_edit = (EditText)view.findViewById(R.id.title_input_edit);
-                ImageButton time_selectBtn = (ImageButton)view.findViewById(R.id.time_selectBtn);
-                TextView time_showText = (TextView) view.findViewById(R.id.time_showText);
-                Button addOkBtn = (Button)view.findViewById(R.id.addOkBtn);
-                Button addCancelBtn = (Button)view.findViewById(R.id.addCancelBtn);
+                addBinding=DataBindingUtil.inflate(inflater,R.layout.add_schedule,null,false);
+                view=addBinding.getRoot();
 
                 builder.setView(view);
                 writeScheduleDialog = builder.create();
                 writeScheduleDialog.setCancelable(false);
                 writeScheduleDialog.show();
 
-                time_selectBtn.setOnClickListener(new View.OnClickListener() {
+                addBinding.timeSelectBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         int hour, minute;
@@ -172,38 +166,36 @@ public class CalendarPage extends Fragment {
                                 Log.e("sMonth",yArray[1]);
                                 Log.e("sDay",yArray[2]);
                                 sYear=yArray[0];
-                                String y1=sYear.substring(2,4); //ex) 2022->'22'
-                                Log.e("y1",String.valueOf(y1));
+                                //String y1=sYear.substring(2,4); //ex) 2022->'22'
                                 sMonth=yArray[1];
                                 sDay=yArray[2];
-                                rqCode = y1 + sMonth + sDay + sHour + sMinute;
+                                rqCode = sMonth + sDay + sHour + sMinute;
                                 Log.e("rqCode",rqCode);
-                                time_showText.setText(n+":"+i1+" "+mode);
+                                addBinding.timeShowText.setText(n+":"+i1+" "+mode);
                             }
                         }, hour, minute, false);
                         timePickerDialog.show();
                     }
                 });
 
-                addOkBtn.setOnClickListener(new View.OnClickListener() {
+                addBinding.addOkBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        title = title_input_edit.getText().toString().trim();
+                        title = addBinding.titleInputEdit.getText().toString().trim();
                         // 제목 내용중에 하나 입력 안 한 경우(저장 x),제목 내용 둘 중에 하나 입력했지만 알람시간 선택하지 않은 경우(알람요청코드,알람시간만 저장x)
                         if (title.isEmpty()){
                             Toast.makeText(getContext(),"제목을 입력해주세요.",Toast.LENGTH_SHORT).show();
                         }else{
                             Log.e("addOkBtn",date);
-                            if (!time_showText.getText().toString().isEmpty()){ //알람 설정했을 경우
-                                Log.e("addOkBtn",time_showText.getText().toString());
+                            if (!addBinding.timeShowText.getText().toString().isEmpty()){ //알람 설정했을 경우
                                 try {
                                     alarm_rqCode=Integer.parseInt(rqCode);
                                     Insert(new Schedule(serial_num, date, title, alarm, alarm_rqCode));
-                                    binding.schedulelistRecyclerView.setLayoutManager(layoutManager);
+                                    //binding.schedulelistRecyclerView.setLayoutManager(layoutManager);
                                     ScheduleItem scheduleItem=new ScheduleItem(title,alarm,date,alarm_rqCode);
                                     String from=sYear+"-"+sMonth+"-"+sDay+" "+sHour+":"+sMinute+":"+"00"; /*알람으로 설정한 날짜*/
-//                                    AlarmFunctions alarmFunctions =new AlarmFunctions(alarm_rqCode, title, getContext());
-//                                    alarmFunctions.callAlarm(from);
+                                    AlarmFunctions alarmFunctions =new AlarmFunctions(alarm_rqCode, title, getContext());
+                                    alarmFunctions.callAlarm(from);
                                     scheduleAdapter.addItem(scheduleItem);
                                     binding.schedulelistRecyclerView.setAdapter(scheduleAdapter);
                                 }catch (NumberFormatException e){
@@ -213,7 +205,7 @@ public class CalendarPage extends Fragment {
                                 alarm_rqCode=0;
                                 alarm="";
                                 Insert(new Schedule(serial_num, date, title, alarm, alarm_rqCode));
-                                binding.schedulelistRecyclerView.setLayoutManager(layoutManager);
+                                //binding.schedulelistRecyclerView.setLayoutManager(layoutManager);
                                 ScheduleItem scheduleItem=new ScheduleItem(title,alarm,selectedDate,alarm_rqCode);
                                 scheduleAdapter.addItem(scheduleItem);
                                 binding.schedulelistRecyclerView.setAdapter(scheduleAdapter);
@@ -222,7 +214,7 @@ public class CalendarPage extends Fragment {
                         }writeScheduleDialog.dismiss();
                     }
                 });
-                addCancelBtn.setOnClickListener(new View.OnClickListener() {
+                addBinding.addCancelBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         writeScheduleDialog.dismiss();
@@ -360,7 +352,7 @@ public class CalendarPage extends Fragment {
                 date=String.valueOf(defaultDateFormat.format(todayDate));
                 Log.e("onItemClick",String.valueOf(date));
                 binding.semiTitle.setText(todayDateFormat.format(todayDate));
-                Toast.makeText(context,binding.semiTitle.getText().toString(),Toast.LENGTH_SHORT).show();
+                selectAll();
             }
         });
         calendarAdapter.notifyDataSetChanged();
@@ -375,6 +367,30 @@ public class CalendarPage extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
+    }
+
+    @SuppressLint("CheckResult")
+    public void selectAll(){
+        viewModel.getAllSchedules()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+                    item.clear();
+                    int i=0;
+                    for (Schedule schedule : s){
+                        String sDate=s.get(i).getDate();
+                        if (date.equals(sDate)){
+                            String title=s.get(i).getTitle();
+                            String alarm=s.get(i).getAlarm();
+                            int rqCode=s.get(i).getAlarm_rqCode();
+                            ScheduleItem scheduleItem=new ScheduleItem(title, alarm, sDate, rqCode);
+                            item.add(scheduleItem);
+                        }
+                        i++;
+                    }
+                    scheduleAdapter.updateList(item);
+                    binding.schedulelistRecyclerView.setAdapter(scheduleAdapter);
+                });
     }
 
 }
