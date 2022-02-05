@@ -1,5 +1,7 @@
 package com.example.mycustomcalendar;
 
+import android.annotation.SuppressLint;
+import android.app.Application;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
@@ -12,6 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.NumberFormat;
@@ -19,8 +23,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private SimpleDateFormat onlyDate=new SimpleDateFormat("yyyy-MM-dd");
@@ -40,6 +48,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private NumberFormat numformat = NumberFormat.getIntegerInstance();
     String today;
     Database db;
+    ViewModel viewModel;
 
     public interface OnItemClickListener {
         void onItemClick(View v, int position) throws ParseException;
@@ -53,7 +62,9 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         numformat.setMinimumIntegerDigits(2);
         mContext = context;
         db=Database.getInstance(context);
-        eventList=db.eventDao().findAll();
+        viewModel=new ViewModelProvider((ViewModelStoreOwner) context, new ViewModelFactory((Application) context.getApplicationContext())).get(ViewModel.class);
+        //eventList=db.eventDao().findAll();
+
 
         Date currentTime = Calendar.getInstance().getTime(); //현재시간
         today = onlyDate.format(currentTime); //오늘 날짜를 yyyy-MM-dd 형식으로 변환
@@ -76,6 +87,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return new DayViewHolder(inflater.inflate(R.layout.viewholder_day, parent, false));
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         int viewType = getItemViewType(position);
@@ -113,14 +125,26 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         else if (viewType == DAY_TYPE) {
             holder.timeText.setBackground(null);
             holder.timeText.setTextColor(mContext.getResources().getColor(R.color.purple_200));
-            for (Event e : eventList){
-                Log.e("onBindViewHolder",e.date);
-                if (e.date.equals(mCalendarList.get(position).getDate())){
-                    holder.mainCL.setBackgroundResource(R.color.mainColor);
-                    //holder.dayText.setBackgroundResource(R.color.mainColor);
-                    break;
-                }
-            }
+//            for (Event e : eventList){
+//                Log.e("onBindViewHolder",e.date);
+//                if (e.date.equals(mCalendarList.get(position).getDate())){
+//                    holder.mainCL.setBackgroundResource(R.color.mainColor);
+//                    //holder.dayText.setBackgroundResource(R.color.mainColor);
+//                    break;
+//                }
+//            }
+
+            viewModel.getAllEvents()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(eventList -> {
+                        for(Event e : eventList){
+                            if (getItemCount()==0 && e.date.equals(mCalendarList.get(position).getDate())){
+                                holder.mainCL.setBackgroundResource(R.color.mainColor);
+                                break;
+                            }
+                        }
+                    });
 
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("d");
@@ -178,10 +202,11 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             }
                         }
                     }else{
-                        Log.e("Adapter", "NO Position");
+                        Log.e("DayViewHolder", "NO Position");
                     }
                 }
             });
         }
     }
+
 }

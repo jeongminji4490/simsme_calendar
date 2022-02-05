@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <ImageButton
+            android:id="@+id/left_btn"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/left"
+            android:scaleType="fitCenter"
+            android:background="#00ff0000"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_margin="20dp"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2022-02"
+            android:textSize="19sp"
+            android:layout_margin="20dp"
+            android:textStyle="bold"
+            android:textColor="#64A0FF"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/right_btn"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/right"
+            android:scaleType="fitCenter"
+            android:background="#00ff0000"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="20dp"
+            tools:ignore="MissingConstraints" />
+
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/mtrl_calendar_days_of_week"
+            app:layout_constraintEnd_toEndOf="@id/mtrl_calendar_days_of_week"
+            app:layout_constraintTop_toTopOf="@+id/mtrl_calendar_days_of_week"
+            app:layout_constraintBottom_toBottomOf="@+id/mtrl_calendar_days_of_week"
+            android:src="@drawable/rectangle"
+            android:layout_margin="5dp"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mtrl_calendar_days_of_week"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/right_btn"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="15dp"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:id="@+id/sunday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="일"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toStartOf="@+id/monday"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/monday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/sunday"
+                app:layout_constraintEnd_toStartOf="@id/tuesday"
+                android:text="월"
+                android:gravity="center"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                app:layout_constraintHorizontal_bias="0.5"/>
+
+            <TextView
+                android:id="@+id/tuesday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/monday"
+                app:layout_constraintEnd_toStartOf="@+id/wednesday"
+                android:text="화"
+                android:gravity="center"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                app:layout_constraintHorizontal_bias="0.5"/>
+
+            <TextView
+                android:id="@+id/wednesday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/tuesday"
+                app:layout_constraintEnd_toStartOf="@+id/thursday"
+                android:text="수"
+                android:gravity="center"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                app:layout_constraintHorizontal_bias="0.5"/>
+
+            <TextView
+                android:id="@+id/thursday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/wednesday"
+                app:layout_constraintEnd_toStartOf="@+id/friday"
+                android:text="목"
+                android:gravity="center"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                app:layout_constraintHorizontal_bias="0.5"/>
+
+            <TextView
+                android:id="@+id/friday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/thursday"
+                app:layout_constraintEnd_toStartOf="@+id/saturday"
+                android:text="금"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                app:layout_constraintHorizontal_bias="0.5"/>
+
+            <TextView
+                android:id="@+id/saturday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/friday"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="토"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:gravity="center"
+                app:layout_constraintHorizontal_bias="0.5"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/mtrl_calendar_days_of_week"
+            app:layout_constraintRight_toRightOf="@id/mtrl_calendar_days_of_week"
+            app:layout_constraintLeft_toLeftOf="@id/mtrl_calendar_days_of_week"
+            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+            app:spanCount="7"
+            android:background="@drawable/layout_border"
+            android:layout_margin="5dp"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/semiTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/recyclerView"
+            app:layout_constraintStart_toStartOf="@id/recyclerView"
+            app:layout_constraintEnd_toEndOf="@id/recyclerView"
+            android:gravity="center"
+            android:background="@drawable/rectangle"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/addScheduleBtn"
+            android:layout_width="0dp"
+            android:layout_height="37dp"
+            app:layout_constraintTop_toBottomOf="@+id/semiTitle"
+            app:layout_constraintStart_toStartOf="@+id/semiTitle"
+            app:layout_constraintEnd_toEndOf="@+id/semiTitle"
+            android:layout_marginTop="10dp"
+            android:text="일정 추가"
+            android:background="@drawable/btn_layout_border"
+            android:textColor="@color/mainColor"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/schedulelist_recyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/addScheduleBtn"
+            app:layout_constraintStart_toStartOf="@+id/addScheduleBtn"
+            app:layout_constraintEnd_toEndOf="@+id/addScheduleBtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingBottom="60dp"
+            android:layout_marginTop="10dp"
+            tools:ignore="MissingConstraints,UnknownIdInLayout">
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

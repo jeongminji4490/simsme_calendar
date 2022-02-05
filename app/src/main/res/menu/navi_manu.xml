@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navi_calendar"
+        android:icon="@drawable/calendar"
+        android:title="달력"/>
+
+    <item
+        android:id="@+id/navi_trash"
+        android:icon="@drawable/clock"
+        android:title="예정"/>
+</menu>
