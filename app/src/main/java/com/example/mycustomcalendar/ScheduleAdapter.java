@@ -37,15 +37,17 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
     private List<ScheduleItem> arrayList=new ArrayList<>();
     Context context;
 
-    String sHour, sMinute, a, rqCode, sAlarm, y, m, d;
+    String sHour, sMinute, a, rqCode, sAlarm, y, m, d, from;
     int serial_num, hour, minute, n;
     int alarm_rqCode;
     ViewModel viewModel;
     ScheduleItemsBinding binding;
+    Database db;
 
     public ScheduleAdapter(Context context){
         this.context=context;
         viewModel=new ViewModelProvider((ViewModelStoreOwner) context, new ViewModelFactory((Application) context.getApplicationContext())).get(ViewModel.class);
+        db=Database.getInstance(context);
     }
 
     @NonNull
@@ -132,7 +134,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
         AlertDialog.Builder builder=new AlertDialog.Builder(context);
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ModifyScheduleBinding binding = DataBindingUtil.inflate(inflater, R.layout.modify_schedule, null, false);
-        //View view=inflater.inflate(R.layout.modify_schedule, null);
         View view=binding.getRoot();
 
         binding.titleInputEdit.setText(title);
@@ -143,7 +144,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
             createDateFormat(date, alarm); //from 생성
         }
         int iRqCode=arrayList.get(position).getRqCode();
-        //AlarmFunctions functions=new AlarmFunctions(iRqCode,title,context);
 
         builder.setView(view);
         dialog = builder.create();
@@ -230,8 +230,9 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
                         try {
                             alarm_rqCode=Integer.parseInt(rqCode);
                             deleteSchedule(position);
-                            InsertSchedule(serial_num, date, newTitle, sAlarm, alarm_rqCode);
-                            String from=createDateFormat(date, sAlarm);
+                            from=createDateFormat(date, sAlarm);
+                            InsertSchedule(serial_num, date, newTitle, sAlarm, alarm_rqCode,from);
+                            db.alarmsDao().insert(new ActiveAlarms(serial_num,alarm_rqCode,from,newTitle));
                             AlarmFunctions newFunction =new AlarmFunctions(alarm_rqCode, newTitle, context);
                             newFunction.callAlarm(from); //알람 재설정
                         }catch (NumberFormatException e){
@@ -241,7 +242,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
                         deleteSchedule(position);
                         alarm_rqCode=0;
                         a="";
-                        InsertSchedule(serial_num, date, newTitle, a, alarm_rqCode);
+                        from="";
+                        InsertSchedule(serial_num, date, newTitle, a, alarm_rqCode,from);
                     }
                     Toast.makeText(context,"수정", Toast.LENGTH_SHORT).show();
                 }dialog.dismiss();
@@ -257,7 +259,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
 
     }
 
-    public void InsertSchedule(int serial_num, String date, String title, String alarm, int alarm_rqCode){
+    public void InsertSchedule(int serial_num, String date, String title, String alarm, int alarm_rqCode, String from){
         viewModel.InsertSchedule(new Schedule(serial_num, date, title, alarm, alarm_rqCode))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -274,6 +276,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
+        db.alarmsDao().delete(arrayList.get(i).getRqCode());
     }
 
     public void deleteEvent(String d){

@@ -44,4 +44,5 @@ public class ViewModel extends AndroidViewModel {
     Completable DeleteEvent(String date){
         return e.Delete(date);
     }
+
 }

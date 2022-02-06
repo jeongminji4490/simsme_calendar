@@ -74,7 +74,7 @@ public class CalendarPage extends Fragment {
 
     //dialog
     LinearLayoutManager layoutManager;
-    private String sYear,sMonth,sDay,date,sHour,sMinute,alarm,rqCode,title;
+    private String sYear,sMonth,sDay,date,sHour,sMinute,alarm,rqCode,title,from;
     int alarm_rqCode,serial_num;
     ViewModel viewModel;
 
@@ -158,15 +158,9 @@ public class CalendarPage extends Fragment {
                                 }
                                 sHour = Integer.toString(i);
                                 sMinute = Integer.toString(i1);
-                                alarm = String.valueOf(n) + ":" + sMinute + " " +mode;
-                                //int iy,im,id;
+                                alarm = String.valueOf(n) + ":" + sMinute + " " +mode;;
                                 String[] yArray=date.split("-"); //선택한 날짜로부터 년/월/일 구하기
-                                Log.e("todatDate",String.valueOf(date));
-                                Log.e("sYear",yArray[0]);
-                                Log.e("sMonth",yArray[1]);
-                                Log.e("sDay",yArray[2]);
                                 sYear=yArray[0];
-                                //String y1=sYear.substring(2,4); //ex) 2022->'22'
                                 sMonth=yArray[1];
                                 sDay=yArray[2];
                                 rqCode = sMonth + sDay + sHour + sMinute;
@@ -189,13 +183,14 @@ public class CalendarPage extends Fragment {
                             Log.e("addOkBtn",date);
                             if (!addBinding.timeShowText.getText().toString().isEmpty()){ //알람 설정했을 경우
                                 try {
+                                    db=Database.getInstance(getContext());
                                     alarm_rqCode=Integer.parseInt(rqCode);
                                     Insert(new Schedule(serial_num, date, title, alarm, alarm_rqCode));
-                                    //binding.schedulelistRecyclerView.setLayoutManager(layoutManager);
                                     ScheduleItem scheduleItem=new ScheduleItem(title,alarm,date,alarm_rqCode);
                                     String from=sYear+"-"+sMonth+"-"+sDay+" "+sHour+":"+sMinute+":"+"00"; /*알람으로 설정한 날짜*/
                                     AlarmFunctions alarmFunctions =new AlarmFunctions(alarm_rqCode, title, getContext());
                                     alarmFunctions.callAlarm(from);
+                                    db.alarmsDao().insert(new ActiveAlarms(serialNum,alarm_rqCode,from,title));
                                     scheduleAdapter.addItem(scheduleItem);
                                     binding.schedulelistRecyclerView.setAdapter(scheduleAdapter);
                                 }catch (NumberFormatException e){
@@ -335,7 +330,6 @@ public class CalendarPage extends Fragment {
                 }
 
                 if (extra > 0) {
-                    //SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     Date d = new Date(dayModelList.get(dayModelList.size() - 1).getCalendarModel().getTimeInMillis());
                 }
             }
@@ -348,9 +342,7 @@ public class CalendarPage extends Fragment {
             public void onItemClick(View v, int position) throws ParseException {
                 String selectedDate=dayModelList.get(position).getDate();
                 todayDate=new Date(defaultDateFormat.parse(selectedDate).getTime());
-                //defaultSelectedDate=new Date(defaultDateFormat.parse(selectedDate).getTime());
                 date=String.valueOf(defaultDateFormat.format(todayDate));
-                Log.e("onItemClick",String.valueOf(date));
                 binding.semiTitle.setText(todayDateFormat.format(todayDate));
                 selectAll();
             }
@@ -367,6 +359,7 @@ public class CalendarPage extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
+
     }
 
     @SuppressLint("CheckResult")

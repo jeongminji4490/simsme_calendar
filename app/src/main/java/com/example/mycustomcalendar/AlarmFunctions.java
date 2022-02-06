@@ -2,26 +2,35 @@ package com.example.mycustomcalendar;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
+import android.app.Application;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 public class AlarmFunctions {
-    int rqCode;
+    int rqCode,serialNum;
     String title;
     Context context;
+    Database db;
 
     public AlarmFunctions(int rqCode, String title, Context context){
         this.rqCode=rqCode;
         this.title=title;
         this.context=context;
+        db=Database.getInstance(context);
     }
 
     @SuppressLint("MissingPermission")
@@ -59,6 +68,7 @@ public class AlarmFunctions {
         PendingIntent pendingIntent=PendingIntent.getBroadcast(context,rqCode,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.cancel(pendingIntent);
         //요청코드 디비에서 삭제
+        db.alarmsDao().delete(rqCode);
         Log.e("Alarm is canceled",String.valueOf(rqCode));
     }
 }
