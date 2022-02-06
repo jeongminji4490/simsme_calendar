@@ -130,20 +130,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 DotAll(position,holder);
             }
 
-            //에러
-//            viewModel.getAllEvents()
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(eventList -> {
-//                        for(Event e : eventList){
-//                            if (getItemCount()==0 && e.date.equals(mCalendarList.get(position).getDate())){
-//                                Log.e("calendaradapter","getAllEvents");
-//                                holder.mainCL.setBackgroundResource(R.color.mainColor);
-//                                break;
-//                            }
-//                        }
-//                    });
-
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("d");
                 Date d = new Date(mCalendarList.get(position).getCalendarModel().getTimeInMillis());
@@ -210,10 +196,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @SuppressLint("CheckResult")
     public void DotAll(int position, DayViewHolder holder){
         viewModel.getAllEvents()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(eventList -> {
-                    for(Event e : eventList){
+                    for (Event e : eventList){
                         if (e.date!=null && e.date.equals(mCalendarList.get(position).getDate())){
                             Log.e("calendaradapter","getAllEvents");
                             holder.mainCL.setBackgroundResource(R.color.mainColor);
@@ -221,6 +205,18 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         }
                     }
                 });
+//        viewModel.getAllEvents()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(eventList -> {
+//                    for(Event e : eventList){
+//                        if (e.date!=null && e.date.equals(mCalendarList.get(position).getDate())){
+//                            Log.e("calendaradapter","getAllEvents");
+//                            holder.mainCL.setBackgroundResource(R.color.mainColor);
+//                            break;
+//                        }
+//                    }
+//                });
     }
 
 }

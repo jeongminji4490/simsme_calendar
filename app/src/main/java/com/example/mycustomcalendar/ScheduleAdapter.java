@@ -261,28 +261,20 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
 
     public void InsertSchedule(int serial_num, String date, String title, String alarm, int alarm_rqCode, String from){
         viewModel.InsertSchedule(new Schedule(serial_num, date, title, alarm, alarm_rqCode))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
         viewModel.InsertEvent(new Event(serial_num, date))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
     }
 
 
     public void deleteSchedule(int i){
         viewModel.DeleteSchedule(arrayList.get(i).title,arrayList.get(i).getAlarm(),arrayList.get(i).getDate())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
         db.alarmsDao().delete(arrayList.get(i).getRqCode());
     }
 
     public void deleteEvent(String d){
         viewModel.DeleteEvent(d)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
     }
 

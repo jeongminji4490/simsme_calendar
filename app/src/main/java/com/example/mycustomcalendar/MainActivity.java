@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView main_navi;
     FragmentManager fragmentManager = getSupportFragmentManager();
     private CalendarPage fragmentCalendar = new CalendarPage();
+    private UpcomingPage fragmentUpcoming = new UpcomingPage();
     //private TrashPage fragmentTrash = new TrashPage();
 
     @Override
@@ -56,9 +57,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navi_calendar:
                     fTransaction.replace(R.id.frame_layout, fragmentCalendar).commitAllowingStateLoss();
                     break;
-//                case R.id.navi_trash:
-//                    fTransaction.replace(R.id.frame_layout, fragmentTrash).commitAllowingStateLoss();
-//                    break;
+                case R.id.navi_upcoming:
+                    fTransaction.replace(R.id.frame_layout, fragmentUpcoming).commitAllowingStateLoss();
+                    break;
             }
             return true;
         }

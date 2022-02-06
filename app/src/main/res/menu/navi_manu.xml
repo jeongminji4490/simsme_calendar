@@ -6,7 +6,12 @@
         android:title="달력"/>
 
     <item
-        android:id="@+id/navi_trash"
+        android:id="@+id/navi_upcoming"
         android:icon="@drawable/clock"
         android:title="예정"/>
+
+    <item
+        android:id="@+id/navi_timer"
+        android:icon="@drawable/hourglass"
+        android:title="타이머"/>
 </menu>

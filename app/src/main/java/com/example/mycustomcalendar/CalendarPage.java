@@ -352,21 +352,14 @@ public class CalendarPage extends Fragment {
 
     public void Insert(Schedule schedule){
         viewModel.InsertSchedule(new Schedule(serial_num, date, title, alarm, alarm_rqCode))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
         viewModel.InsertEvent(new Event(serial_num, date))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-
     }
 
     @SuppressLint("CheckResult")
     public void selectAll(){
         viewModel.getAllSchedules()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
                     item.clear();
                     int i=0;
@@ -384,6 +377,7 @@ public class CalendarPage extends Fragment {
                     scheduleAdapter.updateList(item);
                     binding.schedulelistRecyclerView.setAdapter(scheduleAdapter);
                 });
+
     }
 
 }
