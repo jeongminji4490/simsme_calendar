@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager fragmentManager = getSupportFragmentManager();
     private CalendarPage fragmentCalendar = new CalendarPage();
     private UpcomingPage fragmentUpcoming = new UpcomingPage();
+    private TimerPage fragmentTimer = new TimerPage();
     //private TrashPage fragmentTrash = new TrashPage();
 
     @Override
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navi_upcoming:
                     fTransaction.replace(R.id.frame_layout, fragmentUpcoming).commitAllowingStateLoss();
                     break;
+                case R.id.navi_timer:
+                    fTransaction.replace(R.id.frame_layout, fragmentTimer).commitAllowingStateLoss();
             }
             return true;
         }

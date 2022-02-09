@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+        <EditText
+            android:id="@+id/hourEdit"
+            android:layout_width="40dp"
+            app:layout_constraintStart_toStartOf="@id/startTimerBtn"
+            app:layout_constraintEnd_toEndOf="@id/startTimerBtn"
+            app:layout_constraintBottom_toTopOf="@id/startTimerBtn"
+            android:text="00"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/timerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/stopTimerBtn"
+            app:layout_constraintBottom_toTopOf="@id/stopTimerBtn"
+            android:text=":"
+            android:textSize="34sp"
+            tools:ignore="MissingConstraints" />
+
+        <EditText
+            android:id="@+id/minEdit"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/stopTimerBtn"
+            app:layout_constraintEnd_toEndOf="@id/stopTimerBtn"
+            app:layout_constraintBottom_toTopOf="@id/stopTimerBtn"
+            android:text="00"
+            android:gravity="center"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/timerText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/stopTimerBtn"
+            app:layout_constraintBottom_toTopOf="@id/initTimerBtn"
+            android:text=":"
+            android:textSize="34sp"
+            tools:ignore="MissingConstraints" />
+
+        <EditText
+            android:id="@+id/secEdit"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/initTimerBtn"
+            app:layout_constraintEnd_toEndOf="@id/initTimerBtn"
+            app:layout_constraintBottom_toTopOf="@id/initTimerBtn"
+            android:text="00"
+            android:gravity="center"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/startTimerBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/stopTimerBtn"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_margin="10dp"
+            android:textColor="@color/white"
+            android:text="시작"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/stopTimerBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/startTimerBtn"
+            app:layout_constraintEnd_toStartOf="@id/initTimerBtn"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="@color/white"
+            android:layout_margin="10dp"
+            android:text="중지"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/initTimerBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/stopTimerBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_margin="10dp"
+            android:textColor="@color/white"
+            android:text="초기화"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
