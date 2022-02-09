@@ -193,20 +193,25 @@ public class CalendarPage extends Fragment {
                                     db.alarmsDao().insert(new ActiveAlarms(serialNum,alarm_rqCode,from,title));
                                     scheduleAdapter.addItem(scheduleItem);
                                     binding.schedulelistRecyclerView.setAdapter(scheduleAdapter);
+                                    Toast.makeText(getContext(),"저장", Toast.LENGTH_SHORT).show();
+                                    writeScheduleDialog.dismiss();
                                 }catch (NumberFormatException e){
                                     Log.e("NumberFormatException", "error");
                                 }
-                            }else{ //알람 설정 안했을 경우
-                                alarm_rqCode=0;
-                                alarm="";
+                            }if (addBinding.cancelAlarmBtn.isChecked()) { //알람 설정 안했을 경우
+                                alarm_rqCode = 0;
+                                alarm = "";
                                 Insert(new Schedule(serial_num, date, title, alarm, alarm_rqCode));
                                 //binding.schedulelistRecyclerView.setLayoutManager(layoutManager);
-                                ScheduleItem scheduleItem=new ScheduleItem(title,alarm,selectedDate,alarm_rqCode);
+                                ScheduleItem scheduleItem = new ScheduleItem(title, alarm, selectedDate, alarm_rqCode);
                                 scheduleAdapter.addItem(scheduleItem);
                                 binding.schedulelistRecyclerView.setAdapter(scheduleAdapter);
+                                Toast.makeText(getContext(),"저장", Toast.LENGTH_SHORT).show();
+                                writeScheduleDialog.dismiss();
+                            }if (!addBinding.cancelAlarmBtn.isChecked()){
+                                Toast.makeText(getContext(),"알람 여부를 확인해주세요",Toast.LENGTH_SHORT).show();
                             }
-                            Toast.makeText(getContext(),"저장", Toast.LENGTH_SHORT).show();
-                        }writeScheduleDialog.dismiss();
+                        }//writeScheduleDialog.dismiss();
                     }
                 });
                 addBinding.addCancelBtn.setOnClickListener(new View.OnClickListener() {

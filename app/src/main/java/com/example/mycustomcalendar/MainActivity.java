@@ -2,6 +2,8 @@ package com.example.mycustomcalendar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,11 +31,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    BottomNavigationView main_navi;
-    FragmentManager fragmentManager = getSupportFragmentManager();
+    private BottomNavigationView main_navi;
+    private FragmentManager fragmentManager = getSupportFragmentManager();
     private CalendarPage fragmentCalendar = new CalendarPage();
     private UpcomingPage fragmentUpcoming = new UpcomingPage();
     private TimerPage fragmentTimer = new TimerPage();
+    private ImageButton menuBtn;
+    private DrawerLayout drawerLayout;
     //private TrashPage fragmentTrash = new TrashPage();
 
     @Override
@@ -46,7 +50,15 @@ public class MainActivity extends AppCompatActivity {
         main_navi = (BottomNavigationView)findViewById(R.id.main_underbar);
         main_navi.setItemIconTintList(null);
         main_navi.setOnNavigationItemSelectedListener(new ItemSelectedListener());
+        menuBtn=(ImageButton) findViewById(R.id.menuBtn);
+        drawerLayout=(DrawerLayout)findViewById(R.id.drawer_layout);
 
+        menuBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
     }
 
     class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener {

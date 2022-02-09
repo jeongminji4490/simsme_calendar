@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.exceptions.OnErrorNotImplementedException;
 import io.reactivex.schedulers.Schedulers;
 
 public class UpcomingPage extends Fragment {
@@ -83,59 +85,55 @@ public class UpcomingPage extends Fragment {
     //예정된 일정 리스트업
     @SuppressLint("CheckResult")
     public void selectAll() {
-        dates.clear();
         viewModel.getAllEvents()
                 .subscribe(e->{
+                    dates.clear();
+                    for (Event event : e){
+                        dates.add(event.getDate());
+                    }
                     int i=0; //31일?
                     setDateArray(e.size());
-                    for (Event event : e){ //ok
-                        dates.add(event.getDate());
-                        i++;
-                    }
-                    Collections.sort(dates);
-                    Log.e("s", String.valueOf(dates));
-                    if (dates.size()!=0){
-                        for (int n=0;n<dates.size();n++){
-                            newDates[n]=dateFormat.parse(dates.get(n));
-                            Log.e("s", String.valueOf(newDates[n]));
-                        }
-                        Log.e("length", String.valueOf(newDates.length));
-                        Log.e("tag", String.valueOf(today));
-                        viewModel.getAllSchedules()
-                                .subscribe(s->{
-                                    for (int n=0;n< newDates.length;n++){
-                                        if (newDates[n].equals(today) || newDates[n].after(today)){
-                                            UpcomingScheduleItem item=new UpcomingScheduleItem();
-                                            item.setDate(dates.get(n));
-                                            item.setViewType(1);
-                                            adapter.addItem(item);
-                                            recyclerView.setAdapter(adapter);
-                                            String o=dates.get(n);
-
-                                            for (Schedule schedule : s){
-                                                if (schedule.getDate().equals(o)){
-                                                    String title=schedule.getTitle();
-                                                    String alarm=schedule.getAlarm();
-                                                    UpcomingScheduleItem scheduleItem=new UpcomingScheduleItem();
-                                                    scheduleItem.setTitle(title);
-                                                    scheduleItem.setAlarm(alarm);
-                                                    scheduleItem.setViewType(0);
-                                                    adapter.addItem(scheduleItem);
+                    Log.e("e size", String.valueOf(e.size()));
+                    System.out.println(dates); //왜 date size가 많이 찍히지??
+                        Collections.sort(dates);
+                        Log.e("dates size", String.valueOf(dates.size()));
+                        if (dates.size()!=0){
+                            for (int n=0;n<dates.size();n++){
+                                Log.e("n", String.valueOf(n));
+                                newDates[n]=dateFormat.parse(dates.get(n));
+                            }
+                            Log.e("length", String.valueOf(newDates.length));
+                            Log.e("tag", String.valueOf(today));
+                            viewModel.getAllSchedules()
+                                    .subscribe(s->{
+                                        if (newDates.length!=0){
+                                            for (int n=0;n< newDates.length;n++){
+                                                if (newDates[n].equals(today) || newDates[n].after(today)){
+                                                    UpcomingScheduleItem item=new UpcomingScheduleItem();
+                                                    item.setDate(dates.get(n));
+                                                    item.setViewType(1);
+                                                    adapter.addItem(item);
                                                     recyclerView.setAdapter(adapter);
+                                                    String o=dates.get(n);
+
+                                                    for (Schedule schedule : s){
+                                                        if (schedule.getDate().equals(o)){
+                                                            String title=schedule.getTitle();
+                                                            String alarm=schedule.getAlarm();
+                                                            UpcomingScheduleItem scheduleItem=new UpcomingScheduleItem();
+                                                            scheduleItem.setTitle(title);
+                                                            scheduleItem.setAlarm(alarm);
+                                                            scheduleItem.setViewType(0);
+                                                            adapter.addItem(scheduleItem);
+                                                            recyclerView.setAdapter(adapter);
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
-
-                                    }
-                                });
-                    }
-
-
-
-
-
+                                    });
+                        }
                 });
-
     }
 
     void setDateArray(int size){

@@ -1,58 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.drawerlayout.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_width="match_parent"
+    android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/tbLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolBar"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tbLayout"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolBar"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/mainColor">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="심스메"
+                    android:textSize="20sp"
+                    android:textColor="@color/white" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <ImageButton
+                android:id="@+id/menuBtn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/menu"
+                android:scaleType="fitCenter"
+                app:layout_constraintEnd_toEndOf="@+id/toolBar"
+                app:layout_constraintTop_toTopOf="@id/toolBar"
+                app:layout_constraintBottom_toBottomOf="@id/toolBar"
+                android:layout_margin="10dp"
+                android:background="#00ff0000"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tbLayout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="MissingConstraints" >
+
+        </FrameLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/main_underbar"
+            android:layout_width="0dp"
             android:layout_height="60dp"
-            android:background="@color/mainColor">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="심스메"
-                android:textSize="20sp"
-                android:textColor="@color/white" />
-
-        </androidx.appcompat.widget.Toolbar>
+            android:background="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:menu="@menu/navi_manu"
+            app:itemTextColor="@color/black"
+            tools:ignore="MissingConstraints,UnknownId">
+        </com.google.android.material.bottomnavigation.BottomNavigationView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <FrameLayout
-        android:id="@+id/frame_layout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tbLayout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="MissingConstraints" >
-
-    </FrameLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/main_underbar"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:background="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/navi_manu"
-        app:itemTextColor="@color/black"
-        tools:ignore="MissingConstraints,UnknownId">
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <include layout="@layout/drawer"/>
+</androidx.drawerlayout.widget.DrawerLayout>

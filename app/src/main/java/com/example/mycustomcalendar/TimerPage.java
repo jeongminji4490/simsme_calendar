@@ -1,6 +1,11 @@
 package com.example.mycustomcalendar;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -12,11 +17,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.example.mycustomcalendar.databinding.ActivityTimerBinding;
 
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -27,6 +34,11 @@ public class TimerPage extends Fragment {
     private String sHour,sMin,sSec;
     private CountDownTimer timer;
     private boolean booleanTimer=true;
+    private static final String CHANNEL_ID="timer_channel";
+    private static final String CHANNEL_NAME="t_channel";
+    private static final int NOTIFICATION_ID=0;
+    private NotificationManager notificationManager;
+    private Context mContext;
 
     @Nullable
     @Override
@@ -39,16 +51,21 @@ public class TimerPage extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mContext=getContext().getApplicationContext();
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int id = v.getId();
                 if (id == R.id.startTimerBtn) {
-                    String inputTime=binding.hourEdit.getText().toString()
-                            +binding.minEdit.getText().toString()
-                            +binding.secEdit.getText().toString();
-                    CountTime(inputTime);
+                    try {
+                        String inputTime=binding.hourEdit.getText().toString()
+                                +binding.minEdit.getText().toString()
+                                +binding.secEdit.getText().toString();
+                        CountTime(inputTime);
+                    }catch (StringIndexOutOfBoundsException e){
+                        Toast.makeText(mContext,"시간은 두 자릿수로 입력해주세요 ex) 1분->01 ",Toast.LENGTH_SHORT).show();
+                    }
                 }
                 if (id == R.id.stopTimerBtn){
                     timer.cancel();
@@ -56,8 +73,6 @@ public class TimerPage extends Fragment {
                 }
                 if (id==R.id.initTimerBtn){
                     timer.cancel();
-//                    Intent intent=getActivity().getIntent();
-//                    startActivity(intent);
                     binding.hourEdit.setText("00");
                     binding.minEdit.setText("00");
                     binding.secEdit.setText("00");
@@ -122,11 +137,31 @@ public class TimerPage extends Fragment {
 
             @Override
             public void onFinish() {
-                //노티피케이션
-                //Toast.makeText(getContext(),"타이머 종료!",Toast.LENGTH_SHORT).show();
+                //화면 전환시 getContext를 사용하면 오류가 발생하기 때문에 애플리케이션 자체와 연동되는 getApplicationContext사용
+                createNotification(mContext);
             }
         }.start();
 
+    }
+
+    public void createNotification(Context context){
+        NotificationCompat.Builder builder;
+        notificationManager=(NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){ //Oreo 이상
+            notificationManager.createNotificationChannel( //NotificationChannel 인스턴스를 createNotificationChannel()에 전달하여 앱 알림 채널을 시스템에 등록
+                    new NotificationChannel(CHANNEL_ID,CHANNEL_NAME,NotificationManager.IMPORTANCE_DEFAULT)
+            );
+            builder=new NotificationCompat.Builder(context, CHANNEL_ID);
+
+        }else {
+            builder=new NotificationCompat.Builder(context);
+        }
+
+        builder.setContentTitle("타이머 종료!");
+        builder.setAutoCancel(true); //알림창 터치시 자동 삭제
+        builder.setSmallIcon(R.drawable.bell);
+        Notification notification=builder.build(); //Notification 객체 생성
+        notificationManager.notify(NOTIFICATION_ID,notification); //NotificationManager에게 알림 요청
     }
 
 }
