@@ -11,16 +11,23 @@
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1445" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/drawable-v24/ic_note.xml" value="0.1445" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/drawable/btn_layout_border.xml" value="0.1445" />
+        <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/drawable/calendar_background.xml" value="0.1545" />
+        <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/drawable/ddd.xml" value="0.1545" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/drawable/ic_calendar_background.xml" value="0.1445" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/drawable/ic_calendar_foreground.xml" value="0.1445" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/drawable/ic_left_btn_background.xml" value="0.1445" />
+        <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/drawable/ic_left_btn_foreground.xml" value="0.1235" />
+        <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/drawable/ic_license_background.xml" value="0.1235" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/drawable/ic_license_foreground.xml" value="0.1445" />
+        <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/drawable/ic_right_btn_background.xml" value="0.1235" />
+        <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/drawable/ic_right_btn_foreground.xml" value="0.1235" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/drawable/layout_border.xml" value="0.1445" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/drawable/left_top_layor.xml" value="0.1445" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/drawable/rectangle.xml" value="0.1445" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/drawable/right_layor.xml" value="0.1445" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/drawable/text_edge.xml" value="0.1445" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/layout/activity_calendar.xml" value="0.21784420289855072" />
+        <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/layout/activity_license.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/layout/activity_passed.xml" value="0.21784420289855072" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/layout/activity_timer.xml" value="0.264" />
@@ -28,6 +35,7 @@
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/layout/add_schedule.xml" value="0.21784420289855072" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/layout/drawer.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/layout/drawer_header.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/layout/main_icon.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/layout/modify_schedule.xml" value="0.21784420289855072" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/layout/schedule_items.xml" value="0.21784420289855072" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/layout/upcoming_date_item.xml" value="0.21784420289855072" />
@@ -35,9 +43,15 @@
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/layout/viewholder_day.xml" value="0.1125" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/menu/drawer_menu.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/menu/navi_manu.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/mipmap-anydpi-v26/ic_calendar.xml" value="0.1545" />
+        <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1545" />
+        <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1545" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/MyCustom_/MyCustomCalendar/app/src/main/res/mipmap-anydpi-v26/ic_menu.xml" value="0.1445" />
       </map>
     </option>
+  </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/mainicon.xml" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />

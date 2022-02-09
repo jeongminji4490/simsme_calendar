@@ -181,7 +181,7 @@ public class CalendarPage extends Fragment {
                             Toast.makeText(getContext(),"제목을 입력해주세요.",Toast.LENGTH_SHORT).show();
                         }else{
                             Log.e("addOkBtn",date);
-                            if (!addBinding.timeShowText.getText().toString().isEmpty()){ //알람 설정했을 경우
+                            if (!addBinding.cancelAlarmBtn.isChecked()){ //알람 설정했을 경우
                                 try {
                                     db=Database.getInstance(getContext());
                                     alarm_rqCode=Integer.parseInt(rqCode);
@@ -198,7 +198,7 @@ public class CalendarPage extends Fragment {
                                 }catch (NumberFormatException e){
                                     Log.e("NumberFormatException", "error");
                                 }
-                            }if (addBinding.cancelAlarmBtn.isChecked()) { //알람 설정 안했을 경우
+                            }else { //알람 설정 안했을 경우
                                 alarm_rqCode = 0;
                                 alarm = "";
                                 Insert(new Schedule(serial_num, date, title, alarm, alarm_rqCode));
@@ -206,12 +206,10 @@ public class CalendarPage extends Fragment {
                                 ScheduleItem scheduleItem = new ScheduleItem(title, alarm, selectedDate, alarm_rqCode);
                                 scheduleAdapter.addItem(scheduleItem);
                                 binding.schedulelistRecyclerView.setAdapter(scheduleAdapter);
-                                Toast.makeText(getContext(),"저장", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "저장", Toast.LENGTH_SHORT).show();
                                 writeScheduleDialog.dismiss();
-                            }if (!addBinding.cancelAlarmBtn.isChecked()){
-                                Toast.makeText(getContext(),"알람 여부를 확인해주세요",Toast.LENGTH_SHORT).show();
                             }
-                        }//writeScheduleDialog.dismiss();
+                        }
                     }
                 });
                 addBinding.addCancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -384,5 +382,4 @@ public class CalendarPage extends Fragment {
                 });
 
     }
-
 }
