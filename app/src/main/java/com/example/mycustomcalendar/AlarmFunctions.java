@@ -39,9 +39,15 @@ public class AlarmFunctions {
         Intent receiverIntent=new Intent(context, AlarmReceiver.class); //리시버로 전달될 인텐트 설정
         receiverIntent.putExtra("requestCode",rqCode); //요청 코드를 리시버에 전달
         receiverIntent.putExtra("alarmTitle",title); //수정_일정 제목을 리시버에 전달
+        PendingIntent pendingIntent;
 
-        PendingIntent pendingIntent=PendingIntent.getBroadcast(context,rqCode,receiverIntent,PendingIntent.FLAG_UPDATE_CURRENT); /*getBroadcast(fromContext,customRequestcode,toIntent,flag)*/
-        Log.w("InCalendarPage_RC", String.valueOf(rqCode));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            pendingIntent=PendingIntent.getBroadcast(context,rqCode,receiverIntent,PendingIntent.FLAG_IMMUTABLE); /*getBroadcast(fromContext,customRequestcode,toIntent,flag)*/
+            Log.w("InCalendarPage_RC", String.valueOf(rqCode));
+        }else{
+            pendingIntent=PendingIntent.getBroadcast(context,rqCode,receiverIntent,PendingIntent.FLAG_UPDATE_CURRENT); /*getBroadcast(fromContext,customRequestcode,toIntent,flag)*/
+            Log.w("InCalendarPage_RC", String.valueOf(rqCode));
+        }
 
         SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd H:mm:ss");
         Log.e("dateFormat", String.valueOf(dateFormat));
@@ -65,7 +71,14 @@ public class AlarmFunctions {
     public void cancelAlarm(){
         AlarmManager alarmManager=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent=new Intent(context, AlarmReceiver.class);
-        PendingIntent pendingIntent=PendingIntent.getBroadcast(context,rqCode,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            pendingIntent=PendingIntent.getBroadcast(context,rqCode,intent,PendingIntent.FLAG_IMMUTABLE);
+        }else{
+            pendingIntent=PendingIntent.getBroadcast(context,rqCode,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+
         alarmManager.cancel(pendingIntent);
         //요청코드 디비에서 삭제
         db.alarmsDao().delete(rqCode);

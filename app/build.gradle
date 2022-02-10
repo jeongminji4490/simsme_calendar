@@ -41,6 +41,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation 'androidx.work:work-runtime-ktx:2.7.0'
 
     def room_version = "2.3.0" // check latest version from docs
     implementation 'androidx.databinding:databinding-runtime:4.1.3'

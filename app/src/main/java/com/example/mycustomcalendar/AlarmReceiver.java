@@ -51,9 +51,14 @@ public class AlarmReceiver extends BroadcastReceiver {
         Intent intent2=new Intent(context, AlarmService.class);
         int requestCode=intent.getExtras().getInt("requestCode");
         String title=intent.getExtras().getString("alarmTitle");
+        PendingIntent pendingIntent;
 
         Log.e("AlarmReceiver is Called", String.valueOf(requestCode));
-        PendingIntent pendingIntent=PendingIntent.getActivity(context,requestCode,intent2,PendingIntent.FLAG_UPDATE_CURRENT); //Activity를 시작하는 인텐트 생성
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.S){
+            pendingIntent=PendingIntent.getActivity(context,requestCode,intent2,PendingIntent.FLAG_IMMUTABLE); //Activity를 시작하는 인텐트 생성
+        }else {
+            pendingIntent=PendingIntent.getActivity(context,requestCode,intent2,PendingIntent.FLAG_UPDATE_CURRENT);
+        }
         db.alarmsDao().delete(requestCode);
 
         builder.setContentTitle(title);

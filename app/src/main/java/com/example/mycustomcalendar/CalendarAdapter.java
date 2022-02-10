@@ -205,18 +205,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         }
                     }
                 });
-//        viewModel.getAllEvents()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(eventList -> {
-//                    for(Event e : eventList){
-//                        if (e.date!=null && e.date.equals(mCalendarList.get(position).getDate())){
-//                            Log.e("calendaradapter","getAllEvents");
-//                            holder.mainCL.setBackgroundResource(R.color.mainColor);
-//                            break;
-//                        }
-//                    }
-//                });
+
     }
 
 }

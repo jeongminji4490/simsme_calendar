@@ -106,6 +106,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
         }
         arrayList.remove(position);
         Intent intent=new Intent(context, MainActivity.class);
+        //스택에 쌓인 액티비티 지우기
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
         Toast.makeText(context, "삭제", Toast.LENGTH_SHORT).show();
     }
@@ -144,6 +146,10 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
             createDateFormat(date, alarm); //from 생성
         }
         int iRqCode=arrayList.get(position).getRqCode();
+
+        //제목만 수정할 경우 타임피커를 실행하지 않기 때문에 rqCode에 디폴트 값을 설정해야함
+        rqCode=String.valueOf(iRqCode);
+        sAlarm=String.valueOf(arrayList.get(position).getAlarm());
 
         builder.setView(view);
         dialog = builder.create();
@@ -221,13 +227,14 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
                 AlarmFunctions function=new AlarmFunctions(iRqCode,title,context);
                 function.cancelAlarm();
                 String newTitle = binding.titleInputEdit.getText().toString().trim();
+                System.out.println("rqCode"+rqCode);
 
                 // 제목 내용중에 하나 입력 안 한 경우(저장 x),제목 내용 둘 중에 하나 입력했지만 알람시간 선택하지 않은 경우(알람요청코드,알람시간만 저장x)
                 if (newTitle.isEmpty()){
                     Toast.makeText(context,"제목을 입력해주세요.",Toast.LENGTH_SHORT).show();
                 }else{
-                    if (!binding.timeShowText.getText().toString().isEmpty()){ //알람 설정했을 경우
-                        try {
+                    if (!binding.cancelAlarmBtn.isChecked() && !binding.timeShowText.getText().toString().isEmpty()){ //알람 설정했을 경우
+                        try { //타임피커 실행 및 알람X에 체크하지 않은 상태 -> 한마디로 알람을 설정한 상태
                             alarm_rqCode=Integer.parseInt(rqCode);
                             deleteSchedule(position);
                             from=createDateFormat(date, sAlarm);
@@ -235,18 +242,25 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
                             db.alarmsDao().insert(new ActiveAlarms(serial_num,alarm_rqCode,from,newTitle));
                             AlarmFunctions newFunction =new AlarmFunctions(alarm_rqCode, newTitle, context);
                             newFunction.callAlarm(from); //알람 재설정
+                            Toast.makeText(context,"수정", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
                         }catch (NumberFormatException e){
-                            Log.e("ExceptionInBuilder", "error");
+                            Log.e("NumberFormatException", "error");
                         }
-                    }if (binding.cancelAlarmBtn.isChecked()){ //알람 설정 안했을 경우
-                        deleteSchedule(position);
+                    }else if(binding.cancelAlarmBtn.isChecked() && !binding.timeShowText.getText().toString().isEmpty()){
+                        deleteSchedule(position); //원래 설정했던 시간 그대로, 알람X에 체크한 상태 -> 한마디로 알람을 설정하지 않은 상태
                         alarm_rqCode=0;
                         a="";
                         from="";
                         InsertSchedule(serial_num, date, newTitle, a, alarm_rqCode,from);
+                        Toast.makeText(context,"수정", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }else if(!binding.cancelAlarmBtn.isChecked() && binding.timeShowText.getText().toString().isEmpty()){ //원래부터 시간을 설정하지 않았고, 알람 여부도 체크하지 않은 상태
+                        Toast.makeText(context,"알람 여부를 확인해주세요",Toast.LENGTH_SHORT).show();
+                    }else{ //타임피커를 실행해 시간을 설정했으나 실수로 알람X에 체크한 상태
+                        Toast.makeText(context,"알람 여부를 확인해주세요",Toast.LENGTH_SHORT).show();
                     }
-                    Toast.makeText(context,"수정", Toast.LENGTH_SHORT).show();
-                }dialog.dismiss();
+                }
             }
         });
 

@@ -181,7 +181,7 @@ public class CalendarPage extends Fragment {
                             Toast.makeText(getContext(),"제목을 입력해주세요.",Toast.LENGTH_SHORT).show();
                         }else{
                             Log.e("addOkBtn",date);
-                            if (!addBinding.cancelAlarmBtn.isChecked()){ //알람 설정했을 경우
+                            if (!addBinding.cancelAlarmBtn.isChecked() && !addBinding.timeShowText.getText().toString().isEmpty()){ //타임피커 설정 및 알람x에 체크하지 않은 상태 -> 한마디로 알람 설정한 상태
                                 try {
                                     db=Database.getInstance(getContext());
                                     alarm_rqCode=Integer.parseInt(rqCode);
@@ -198,7 +198,7 @@ public class CalendarPage extends Fragment {
                                 }catch (NumberFormatException e){
                                     Log.e("NumberFormatException", "error");
                                 }
-                            }else { //알람 설정 안했을 경우
+                            }else if(addBinding.cancelAlarmBtn.isChecked() && addBinding.timeShowText.getText().toString().isEmpty()){ //알람 설정 안했을 경우
                                 alarm_rqCode = 0;
                                 alarm = "";
                                 Insert(new Schedule(serial_num, date, title, alarm, alarm_rqCode));
@@ -208,6 +208,8 @@ public class CalendarPage extends Fragment {
                                 binding.schedulelistRecyclerView.setAdapter(scheduleAdapter);
                                 Toast.makeText(getContext(), "저장", Toast.LENGTH_SHORT).show();
                                 writeScheduleDialog.dismiss();
+                            }else{ //실수로 타임피커를 설정하고 알람X에 체크했을 경우
+                                Toast.makeText(getContext(),"알람 여부를 확인해주세요",Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
