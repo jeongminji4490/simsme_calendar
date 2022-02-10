@@ -1,5 +1,7 @@
 package com.example.mycustomcalendar;
 
+import static android.util.Log.e;
+
 import android.app.AlertDialog;
 import android.app.Application;
 import android.app.TimePickerDialog;
@@ -169,8 +171,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
                         hour=c.get(Calendar.HOUR);
                         minute=c.get(Calendar.MINUTE);
                     }
-                    Log.e("hour",String.valueOf(hour));
-                    Log.e("minute",String.valueOf(minute));
+                    e("hour",String.valueOf(hour));
+                    e("minute",String.valueOf(minute));
                 }else {
                     String[] sArray1=alarm.split("\\s"); //5:17, AM
                     String[] sArray2=sArray1[0].split(":"); //5, 17
@@ -181,14 +183,14 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
                             hour=f_hour+12; //수정
                             Log.e("hour", String.valueOf(hour));
                         }catch (NumberFormatException e){
-                            Log.e("time_selectBtn", "NumberFormatException");
+                            e("time_selectBtn", "NumberFormatException");
                         }
                     }else{
                         try {
                             hour=Integer.parseInt(sArray2[0]);
-                            Log.e("hour", String.valueOf(hour));
+                            e("hour", String.valueOf(hour));
                         }catch (NumberFormatException e){
-                            Log.e("time_selectBtn", "NumberFormatException");
+                            e("time_selectBtn", "NumberFormatException");
                         }
                     }
                     minute=Integer.parseInt(sArray2[1]);
@@ -245,9 +247,9 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
                             Toast.makeText(context,"수정", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                         }catch (NumberFormatException e){
-                            Log.e("NumberFormatException", "error");
+                            e("NumberFormatException", "error");
                         }
-                    }else if(binding.cancelAlarmBtn.isChecked() && !binding.timeShowText.getText().toString().isEmpty()){
+                    }else if(binding.cancelAlarmBtn.isChecked()){
                         deleteSchedule(position); //원래 설정했던 시간 그대로, 알람X에 체크한 상태 -> 한마디로 알람을 설정하지 않은 상태
                         alarm_rqCode=0;
                         a="";
@@ -257,7 +259,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
                         dialog.dismiss();
                     }else if(!binding.cancelAlarmBtn.isChecked() && binding.timeShowText.getText().toString().isEmpty()){ //원래부터 시간을 설정하지 않았고, 알람 여부도 체크하지 않은 상태
                         Toast.makeText(context,"알람 여부를 확인해주세요",Toast.LENGTH_SHORT).show();
-                    }else{ //타임피커를 실행해 시간을 설정했으나 실수로 알람X에 체크한 상태
+                    }
+                    else{ //타임피커를 실행해 시간을 설정했으나 실수로 알람X에 체크한 상태
                         Toast.makeText(context,"알람 여부를 확인해주세요",Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -305,16 +308,16 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
             try {
                 int f_hour=Integer.parseInt(sArray2[0]);
                 hour=f_hour+12; //수정
-                Log.e("hour", String.valueOf(hour));
+                e("hour", String.valueOf(hour));
             }catch (NumberFormatException e){
-                Log.e("time_selectBtn", "NumberFormatException");
+                e("time_selectBtn", "NumberFormatException");
             }
         }else{
             try {
                 hour=Integer.parseInt(sArray2[0]);
-                Log.e("hour", String.valueOf(hour));
+                e("hour", String.valueOf(hour));
             }catch (NumberFormatException e){
-                Log.e("time_selectBtn", "NumberFormatException");
+                e("time_selectBtn", "NumberFormatException");
             }
         }
         minute=Integer.parseInt(sArray2[1]);
