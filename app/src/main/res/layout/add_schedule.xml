@@ -5,9 +5,9 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
-
 
         <EditText
             android:id="@+id/title_input_edit"
@@ -17,6 +17,8 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             android:hint="내용"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
             android:textSize="15dp"
             tools:ignore="MissingConstraints" />
 
@@ -47,6 +49,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:textColor="@color/black"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/time_selectBtn"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -66,7 +69,7 @@
             app:layout_constraintTop_toBottomOf="@+id/calendar_constraint2"
             android:buttonTint="@color/mainColor"
             android:text="알람X"
-            />
+            android:textColor="@color/black" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
@@ -97,6 +100,8 @@
                 app:layout_constraintStart_toEndOf="@id/addCancelBtn"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:text="저장"
+                android:textColor="@color/white"
+                android:background="@color/mainColor"
                 android:layout_margin="10dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,7 @@
     <data>
         <variable
             name="schedule"
-            type="com.example.mycustomcalendar.ScheduleItem" />
+            type="com.simsme.mycustomcalendar.ScheduleItem" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -41,7 +41,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/title_inList"
                 app:layout_constraintStart_toStartOf="parent"
                 android:text="@{schedule.alarm}"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 tools:ignore="MissingConstraints" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

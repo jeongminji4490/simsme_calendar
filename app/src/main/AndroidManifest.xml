@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.mycustomcalendar">
+    package="com.simsme.mycustomcalendar">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyCustomCalendar">
         <receiver
-            android:name=".AlarmReceiver"
+            android:name="com.simsme.mycustomcalendar.AlarmReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -21,7 +21,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".RestartAlarmReceiver"
+            android:name="com.simsme.mycustomcalendar.RestartAlarmReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -30,7 +30,7 @@
         </receiver>
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.simsme.mycustomcalendar.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

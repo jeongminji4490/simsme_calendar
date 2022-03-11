@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".LicensePage">
 
     <TextView
@@ -17,6 +18,7 @@
         android:layout_margin="10dp"
         android:gravity="center"
         android:textStyle="bold"
+        android:textColor="@color/black"
         android:text="All icons are resources of Flaticon.com"
         tools:ignore="MissingConstraints" />
 
