@@ -1,4 +1,4 @@
-package com.simsme.mycustomcalendar;
+package com.simsme.mycustomcalendar.ui;
 
 import android.graphics.Canvas;
 import android.graphics.Color;

@@ -1,4 +1,4 @@
-package com.simsme.mycustomcalendar;
+package com.simsme.mycustomcalendar.alarm;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
+
+import com.simsme.mycustomcalendar.db.Database;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

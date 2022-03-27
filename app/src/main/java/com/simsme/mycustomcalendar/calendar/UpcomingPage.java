@@ -1,4 +1,4 @@
-package com.simsme.mycustomcalendar;
+package com.simsme.mycustomcalendar.calendar;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.simsme.mycustomcalendar.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class UpcomingPage extends Fragment {
 
@@ -39,7 +41,6 @@ public class UpcomingPage extends Fragment {
     Date today;
     SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
     List<String> dates=new ArrayList<>();
-    //List<Date> newDates;
     Date[] newDates;
     Observable<List<Schedule>> scheduleList;
 
@@ -81,6 +82,7 @@ public class UpcomingPage extends Fragment {
     @SuppressLint("CheckResult")
     public void selectAll() {
         viewModel.getAllEvents()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(e->{
                     dates.clear();
                     for (Event event : e){
@@ -88,18 +90,14 @@ public class UpcomingPage extends Fragment {
                     }
                     int i=0; //31일?
                     setDateArray(e.size());
-                    Log.e("e size", String.valueOf(e.size()));
                     System.out.println(dates); //왜 date size가 많이 찍히지??
                         Collections.sort(dates);
-                        Log.e("dates size", String.valueOf(dates.size()));
                         if (dates.size()!=0){
                             for (int n=0;n<dates.size();n++){
-                                Log.e("n", String.valueOf(n));
                                 newDates[n]=dateFormat.parse(dates.get(n));
                             }
-                            Log.e("length", String.valueOf(newDates.length));
-                            Log.e("tag", String.valueOf(today));
                             viewModel.getAllSchedules()
+                                    .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(s->{
                                         if (newDates.length!=0){
                                             for (int n=0;n< newDates.length;n++){

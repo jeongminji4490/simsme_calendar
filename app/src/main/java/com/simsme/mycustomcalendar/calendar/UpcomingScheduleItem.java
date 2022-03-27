@@ -1,15 +1,9 @@
-package com.simsme.mycustomcalendar;
+package com.simsme.mycustomcalendar.calendar;
 
-public class ScheduleItem {
+public class UpcomingScheduleItem {
+
     String title,alarm,date;
-    int rqCode;
-
-    public ScheduleItem(String title, String alarm, String date, int rqCode){
-        this.title=title;
-        this.alarm=alarm;
-        this.date=date;
-        this.rqCode=rqCode;
-    }
+    int viewType;
 
     public String getTitle() {
         return title;
@@ -35,11 +29,15 @@ public class ScheduleItem {
         this.date = date;
     }
 
-    public int getRqCode() {
-        return rqCode;
+    public int getViewType() {
+        return viewType;
     }
 
-    public void setRqCode(int rqCode) {
-        this.rqCode = rqCode;
+    public void setViewType(int viewType) {
+        this.viewType = viewType;
     }
 }
+
+
+
+

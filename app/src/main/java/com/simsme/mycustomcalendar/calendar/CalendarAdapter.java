@@ -1,4 +1,4 @@
-package com.simsme.mycustomcalendar;
+package com.simsme.mycustomcalendar.calendar;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
@@ -15,6 +15,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.simsme.mycustomcalendar.db.Database;
+import com.simsme.mycustomcalendar.ui.DayModel;
+import com.simsme.mycustomcalendar.R;
 
 import java.text.NumberFormat;
 import java.text.ParseException;

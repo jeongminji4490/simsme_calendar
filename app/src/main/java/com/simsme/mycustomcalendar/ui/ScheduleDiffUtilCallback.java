@@ -1,7 +1,9 @@
-package com.simsme.mycustomcalendar;
+package com.simsme.mycustomcalendar.ui;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
+
+import com.simsme.mycustomcalendar.calendar.ScheduleItem;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.simsme.mycustomcalendar;
+package com.simsme.mycustomcalendar.ui;
 
 import androidx.recyclerview.widget.RecyclerView;
 

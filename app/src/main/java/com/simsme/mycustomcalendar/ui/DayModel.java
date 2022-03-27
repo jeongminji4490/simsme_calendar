@@ -1,4 +1,4 @@
-package com.simsme.mycustomcalendar;
+package com.simsme.mycustomcalendar.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

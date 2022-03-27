@@ -1,4 +1,4 @@
-package com.simsme.mycustomcalendar;
+package com.simsme.mycustomcalendar.alarm;
 
 import android.app.IntentService;
 import android.app.Service;

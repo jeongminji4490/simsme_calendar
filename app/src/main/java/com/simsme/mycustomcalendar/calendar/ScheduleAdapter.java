@@ -1,4 +1,4 @@
-package com.simsme.mycustomcalendar;
+package com.simsme.mycustomcalendar.calendar;
 
 import static android.util.Log.e;
 
@@ -22,6 +22,13 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.simsme.mycustomcalendar.db.Database;
+import com.simsme.mycustomcalendar.ui.ItemTouchHelperListener;
+import com.simsme.mycustomcalendar.MainActivity;
+import com.simsme.mycustomcalendar.R;
+import com.simsme.mycustomcalendar.ui.ScheduleDiffUtilCallback;
+import com.simsme.mycustomcalendar.alarm.ActiveAlarms;
+import com.simsme.mycustomcalendar.alarm.AlarmFunctions;
 import com.simsme.mycustomcalendar.databinding.ModifyScheduleBinding;
 import com.simsme.mycustomcalendar.databinding.ScheduleItemsBinding;
 
@@ -30,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder> implements ItemTouchHelperListener{
+public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder> implements ItemTouchHelperListener {
 
     private List<ScheduleItem> arrayList=new ArrayList<>();
     Context context;
@@ -52,7 +59,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater=LayoutInflater.from(context);
-        binding= DataBindingUtil.inflate(inflater,R.layout.schedule_items,parent,false);
+        binding= DataBindingUtil.inflate(inflater, R.layout.schedule_items,parent,false);
         View view=binding.getRoot();
         return new ScheduleAdapter.Holder(view);
     }
@@ -67,8 +74,12 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
         return arrayList.size();
     }
 
-    public void addItem(ScheduleItem item){
-        arrayList.add(item);
+    public void addItem(int serial_num, String date, String title, String alarm, int alarm_rqCode, String from){
+        arrayList.add(new ScheduleItem(title,alarm,date,alarm_rqCode));
+        InsertSchedule(serial_num, date, title, alarm, alarm_rqCode,from);
+        AlarmFunctions alarmFunctions =new AlarmFunctions(alarm_rqCode, title, context);
+        alarmFunctions.callAlarm(from);
+        db.alarmsDao().insert(new ActiveAlarms(serial_num,alarm_rqCode,from,title));
     }
 
     @Override
@@ -133,7 +144,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
         AlertDialog dialog;
         AlertDialog.Builder builder=new AlertDialog.Builder(context);
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ModifyScheduleBinding binding = DataBindingUtil.inflate(inflater, R.layout.modify_schedule, null, false);
+        ModifyScheduleBinding binding=ModifyScheduleBinding.inflate(inflater);
         View view=binding.getRoot();
 
         binding.titleInputEdit.setText(title);
@@ -167,8 +178,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
                         hour=c.get(Calendar.HOUR);
                         minute=c.get(Calendar.MINUTE);
                     }
-                    e("hour",String.valueOf(hour));
-                    e("minute",String.valueOf(minute));
                 }else {
                     String[] sArray1=alarm.split("\\s"); //5:17, AM
                     String[] sArray2=sArray1[0].split(":"); //5, 17
@@ -177,14 +186,12 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
                         try {
                             int f_hour=Integer.parseInt(sArray2[0]);
                             hour=f_hour+12; //수정
-                            Log.e("hour", String.valueOf(hour));
                         }catch (NumberFormatException e){
                             e("time_selectBtn", "NumberFormatException");
                         }
                     }else{
                         try {
                             hour=Integer.parseInt(sArray2[0]);
-                            e("hour", String.valueOf(hour));
                         }catch (NumberFormatException e){
                             e("time_selectBtn", "NumberFormatException");
                         }
@@ -225,7 +232,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
                 AlarmFunctions function=new AlarmFunctions(iRqCode,title,context);
                 function.cancelAlarm();
                 String newTitle = binding.titleInputEdit.getText().toString().trim();
-                System.out.println("rqCode"+rqCode);
 
                 // 제목 내용중에 하나 입력 안 한 경우(저장 x),제목 내용 둘 중에 하나 입력했지만 알람시간 선택하지 않은 경우(알람요청코드,알람시간만 저장x)
                 if (newTitle.isEmpty()){
@@ -273,22 +279,18 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
     }
 
     public void InsertSchedule(int serial_num, String date, String title, String alarm, int alarm_rqCode, String from){
-        viewModel.InsertSchedule(new Schedule(serial_num, date, title, alarm, alarm_rqCode))
-                .subscribe();
-        viewModel.InsertEvent(new Event(serial_num, date))
-                .subscribe();
+        viewModel.InsertSchedule(new Schedule(serial_num, date, title, alarm, alarm_rqCode));
+        viewModel.InsertEvent(new Event(serial_num, date));
     }
 
 
     public void deleteSchedule(int i){
-        viewModel.DeleteSchedule(arrayList.get(i).title,arrayList.get(i).getAlarm(),arrayList.get(i).getDate())
-                .subscribe();
+        viewModel.DeleteSchedule(arrayList.get(i).title,arrayList.get(i).getAlarm(),arrayList.get(i).getDate());
         db.alarmsDao().delete(arrayList.get(i).getRqCode());
     }
 
     public void deleteEvent(String d){
-        viewModel.DeleteEvent(d)
-                .subscribe();
+        viewModel.DeleteEvent(d);
     }
 
 
@@ -304,16 +306,16 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Holder
             try {
                 int f_hour=Integer.parseInt(sArray2[0]);
                 hour=f_hour+12; //수정
-                e("hour", String.valueOf(hour));
+                Log.e("hour", String.valueOf(hour));
             }catch (NumberFormatException e){
-                e("time_selectBtn", "NumberFormatException");
+                Log.e("time_selectBtn", "NumberFormatException");
             }
         }else{
             try {
                 hour=Integer.parseInt(sArray2[0]);
-                e("hour", String.valueOf(hour));
+                Log.e("hour", String.valueOf(hour));
             }catch (NumberFormatException e){
-                e("time_selectBtn", "NumberFormatException");
+                Log.e("time_selectBtn", "NumberFormatException");
             }
         }
         minute=Integer.parseInt(sArray2[1]);

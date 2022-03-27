@@ -1,9 +1,16 @@
-package com.simsme.mycustomcalendar;
+package com.simsme.mycustomcalendar.db;
 
 import android.content.Context;
 
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+
+import com.simsme.mycustomcalendar.alarm.ActiveAlarms;
+import com.simsme.mycustomcalendar.alarm.ActiveAlarmsDao;
+import com.simsme.mycustomcalendar.calendar.Event;
+import com.simsme.mycustomcalendar.calendar.EventDao;
+import com.simsme.mycustomcalendar.calendar.Schedule;
+import com.simsme.mycustomcalendar.calendar.ScheduleDao;
 
 @androidx.room.Database(entities = {Schedule.class, Event.class, ActiveAlarms.class}, version = 1)
 public abstract class Database extends RoomDatabase {

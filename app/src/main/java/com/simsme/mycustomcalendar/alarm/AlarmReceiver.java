@@ -1,4 +1,4 @@
-package com.simsme.mycustomcalendar;
+package com.simsme.mycustomcalendar.alarm;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -12,6 +12,9 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+
+import com.simsme.mycustomcalendar.db.Database;
+import com.simsme.mycustomcalendar.R;
 
 public class AlarmReceiver extends BroadcastReceiver {
 

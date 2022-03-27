@@ -1,4 +1,4 @@
-package com.simsme.mycustomcalendar;
+package com.simsme.mycustomcalendar.calendar;
 
 import androidx.room.Dao;
 import androidx.room.Insert;

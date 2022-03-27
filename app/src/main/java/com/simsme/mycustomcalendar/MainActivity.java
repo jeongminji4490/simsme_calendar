@@ -14,6 +14,8 @@ import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.simsme.mycustomcalendar.calendar.CalendarPage;
+import com.simsme.mycustomcalendar.calendar.UpcomingPage;
 
 public class MainActivity extends AppCompatActivity {
 

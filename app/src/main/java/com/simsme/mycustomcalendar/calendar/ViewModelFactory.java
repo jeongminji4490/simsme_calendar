@@ -1,4 +1,4 @@
-package com.simsme.mycustomcalendar;
+package com.simsme.mycustomcalendar.calendar;
 
 import android.app.Application;
 
@@ -15,6 +15,6 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new com.simsme.mycustomcalendar.ViewModel(application);
+        return (T) new com.simsme.mycustomcalendar.calendar.ViewModel(application);
     }
 }

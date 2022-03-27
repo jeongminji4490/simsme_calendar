@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyCustomCalendar">
         <receiver
-            android:name="com.simsme.mycustomcalendar.AlarmReceiver"
+            android:name="com.simsme.mycustomcalendar.alarm.AlarmReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -21,7 +21,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.simsme.mycustomcalendar.RestartAlarmReceiver"
+            android:name="com.simsme.mycustomcalendar.alarm.RestartAlarmReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

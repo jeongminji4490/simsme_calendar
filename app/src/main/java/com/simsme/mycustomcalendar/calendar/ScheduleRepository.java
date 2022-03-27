@@ -1,12 +1,13 @@
-package com.simsme.mycustomcalendar;
+package com.simsme.mycustomcalendar.calendar;
 
 import android.content.Context;
+
+import com.simsme.mycustomcalendar.db.Database;
 
 import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class ScheduleRepository {
@@ -22,27 +23,16 @@ public class ScheduleRepository {
 
     public Observable<List<Schedule>> getScheduleList(){
         return dao.findAll()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    public int getRowCount(){
-        return dao.getRowCount();
+                .subscribeOn(Schedulers.io());
     }
 
     Completable Insert(Schedule s){
-                return dao.insert(s)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
+        return dao.insert(s)
+                .subscribeOn(Schedulers.io());
     }
 
     Completable Delete(String t, String a, String d){
         return dao.delete(t,a,d)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    Completable Update(Schedule schedule){
-        return dao.update(schedule);
+                .subscribeOn(Schedulers.io());
     }
 }

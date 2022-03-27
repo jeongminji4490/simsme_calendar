@@ -1,4 +1,4 @@
-package com.simsme.mycustomcalendar;
+package com.simsme.mycustomcalendar.calendar;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
